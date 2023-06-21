@@ -53,7 +53,7 @@ def folder(request):
         model = tf.keras.models.load_model(str(BASE_DIR)+'/app/model.h5')
         rust = []
         values = []
-        folder = str(BASE_DIR) + '\media'
+        folder = str(BASE_DIR) + '/media'
         for file in files:
             for filename in os.listdir(folder):
                 file_path = os.path.join(folder, filename)
