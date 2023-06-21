@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 def index(request):
     if request.method == 'POST':
         print(BASE_DIR)
-        folder = str(BASE_DIR) + '\media'
+        folder = str(BASE_DIR) + '/media'
         for filename in os.listdir(folder):
             file_path = os.path.join(folder, filename)
             try:
