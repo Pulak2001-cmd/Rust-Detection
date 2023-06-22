@@ -53,6 +53,8 @@ def folder(request):
         model = tf.keras.models.load_model(str(BASE_DIR)+'/app/model.h5')
         rust = []
         values = []
+        rusts = 0
+        norust = 0
         folder = str(BASE_DIR) + '/media'
         for file in files:
             for filename in os.listdir(folder):
@@ -68,7 +70,7 @@ def folder(request):
                     print('Failed to delete %s. Reason: %s' % (file_path, e))
             document = Images.objects.create(img=file)
             document.save()
-            img_path = str(BASE_DIR) + "/media/" + str(file)
+            img_path = str(BASE_DIR) + "/media/" + str(file).replace(' ', '_')
             img = tf.keras.utils.load_img(img_path, target_size = (128, 128))
             img = tf.keras.utils.img_to_array(img)
             img = np.expand_dims(img, axis = 0)
@@ -76,8 +78,14 @@ def folder(request):
             if pred_value < 0.5:
                 rust.append(file)
                 values.append(str(file))
+                rusts += 1
+            else:
+                norust += 1
         context = {
             'rust': rust,
+            'no_of_rust': rusts,
+            'norust': norust,
+            'total': len(files)
         }
         print(rust)
         return render(request, 'folder.html', context=context)
